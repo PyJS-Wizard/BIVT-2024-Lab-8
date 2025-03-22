@@ -14,7 +14,7 @@ namespace Lab_8 {
     public abstract class Purple {
         private string _input;
         protected static readonly char[] punctuationMarks 
-            = {'.', '!', '?', ',', ':', '\"', ';', '–', '(', ')', '[', ']', '{', '}', '/', '-'}; /// REMOVE! "-"
+            = {'.', '!', '?', ',', ':', '\"', ';', '–', '(', ')', '[', ']', '{', '}', '/'};
         public string Input => _input;
 
         public Purple(string input) {
@@ -27,7 +27,7 @@ namespace Lab_8 {
             return char.IsLetter(c) || c == '-' || c == '\''; 
         }
 
-        public string FormatNumbers(string s) {
+        protected string FormatNumbers(string s) {
             if (string.IsNullOrEmpty(s)) return s;
                 
             var result = new StringBuilder();

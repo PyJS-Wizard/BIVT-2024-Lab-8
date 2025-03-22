@@ -11,16 +11,10 @@ using System.Threading.Tasks;
 
 namespace Lab_8 {
     class Program {
-        static void Main(string[] args) {
+        static void Main(string[] args) {  
             
-
-            var testInput = "aaa*lli).**lll..ye)";
-            var p = new Purple_4(testInput, new (string, char)[] {("Az", '*'), ("YY", ')'), ("uo", '.')});
-
-            p.Review();
-
-
-            System.Console.WriteLine(p.ToString());
         }
+
     }
 }
+

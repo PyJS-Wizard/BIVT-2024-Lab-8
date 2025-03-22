@@ -33,7 +33,7 @@ namespace Lab_8 {
                 if (word.Length == 0) continue;
 
                 int n = curLine.Length;
-                if ( (n + 1 + word.Length <= 50) || (n == 0 && word.Length >= 50) ) {
+                if ((n + 1 + word.Length <= 50) || (n == 0 && word.Length >= 50)) {
                     if (n > 0) curLine.Append(' ');
                     curLine.Append(word);
                 } 
@@ -43,15 +43,13 @@ namespace Lab_8 {
 
                     var splittedWords = curLine.ToString().Split();
                     int spaceCount = splittedWords.Length - 1;
-
                     int remaining = Math.Max(0, 50 - curLine.Length);
                     int minSpaces, additionalSpaceCount;
 
                     if (spaceCount > 0) {
                         minSpaces = 1 + remaining / spaceCount;
                         additionalSpaceCount = remaining % spaceCount;
-                    }
-                    else {
+                    } else {
                         minSpaces = remaining;
                         additionalSpaceCount = 0;
                     }
@@ -67,6 +65,7 @@ namespace Lab_8 {
                     }
                     
                     resultLines.Append(splittedWords[^1]);
+                    
                     if (spaceCount == 0) resultLines.Append(new string(' ', remaining));
                     
                     curLine.Clear();

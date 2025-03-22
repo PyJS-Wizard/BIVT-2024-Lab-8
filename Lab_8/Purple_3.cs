@@ -26,7 +26,11 @@ namespace Lab_8 {
             _codes[^1] = (pair, code);
         }
         public override void Review() {
-            if (Input == null) return;
+            if (string.IsNullOrEmpty(Input)) {
+                _output = Input;
+                return;
+            }
+
             _codes = new (string, char)[0];
 
             var pairs = new string[Input.Length - 1];
@@ -41,7 +45,7 @@ namespace Lab_8 {
                     ASCIIRangeUsed[Input[i] - 32] = true; 
             }
 
-            pairs = pairs.Where(p => p.All(Char.IsLetter))
+            pairs = pairs.Where(p => p.All(char.IsLetter))
                          .GroupBy(p => p)
                          .OrderByDescending(g => g.Count())
                          .Select(g => g.Key)

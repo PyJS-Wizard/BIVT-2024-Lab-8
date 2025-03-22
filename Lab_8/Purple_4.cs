@@ -28,6 +28,8 @@ namespace Lab_8 {
                 var letters = pair.Item1;
                 var cipheredChar = pair.Item2;
 
+                if (letters == null) continue;
+                
                 resultString.Replace(cipheredChar.ToString(), letters);
             }
 

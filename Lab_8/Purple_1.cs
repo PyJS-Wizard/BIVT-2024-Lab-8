@@ -18,34 +18,35 @@ namespace Lab_8 {
             _output = String.Empty;
         }
 
-        private void ReverseStringBuilder(StringBuilder array) {
-            for (int k = 0; k < array.Length / 2; k++)
-                (array[k], array[^(k + 1)]) = (array[^(k + 1)], array[k]);
+        private void ReverseStringBuilder(StringBuilder array, int startIndex, int lastIndex) {
+            if (startIndex < 0 || lastIndex >= array.Length) return;
+
+            while (startIndex < lastIndex) {
+                (array[startIndex], array[lastIndex]) = (array[lastIndex], array[startIndex]);
+                startIndex++;
+                lastIndex--;
+            }
         }
         public override void Review() {
-            if (Input == null) return;
+            if (string.IsNullOrEmpty(Input))  {
+                _output = Input;
+                return;
+            }
             
-            var resultString = new StringBuilder();
-            var curWord = new StringBuilder();
+            var resultString = new StringBuilder(Input);
+            var startIndex = -1;
 
             for (int i = 0; i < Input.Length; i++) {
-                char curChar = Input[i];
+                bool isLetter = IsInWord(Input[i]);
 
-                if (IsInWord(curChar)) 
-                    curWord.Append(curChar);
-                else {
-                    ReverseStringBuilder(curWord);
-
-                    resultString.Append(curWord);
-                    resultString.Append(curChar);
-                    
-                    curWord.Clear();
+                if (isLetter && startIndex == -1)
+                    startIndex = i; 
+                
+                if ((!isLetter && startIndex > -1) || i == Input.Length - 1) {
+                    ReverseStringBuilder(resultString, startIndex, isLetter ? i : i - 1);
+                    startIndex = -1;
                 }
-
             }
-
-            ReverseStringBuilder(curWord);
-            resultString.Append(curWord);
 
            _output = resultString.ToString();
         }
