@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
@@ -14,7 +15,7 @@ namespace Lab_8 {
         private (string, char)[] _codes;
 
         public string Output => _output;
-        public (string, char)[] Codes => _codes;
+        public (string, char)[] Codes => ((string, char)[])_codes?.Clone();
 
         public Purple_3(string input) : base(input) {
             _codes = new (string, char)[0];
@@ -25,24 +26,32 @@ namespace Lab_8 {
             Array.Resize(ref _codes, _codes.Length + 1);
             _codes[^1] = (pair, code);
         }
+
+        private int GetFirstUnusedASCII(string s) {
+            var ASCIIRangeUsed = new bool[126 - 32 + 1];
+
+            foreach (var c in s) {
+                if (c >= 32 && c <= 126) 
+                    ASCIIRangeUsed[c - 32] = true; 
+            }
+        
+            return Array.FindIndex(ASCIIRangeUsed, a => a == false) + 32;
+        }
         public override void Review() {
-            if (string.IsNullOrEmpty(Input)) {
+            if (Input == null) return;
+
+            _codes = new (string, char)[0];
+            
+            if (Input.Length == 0) {
                 _output = Input;
                 return;
             }
-
-            _codes = new (string, char)[0];
-
+            
             var pairs = new string[Input.Length - 1];
-            var ASCIIRangeUsed = new bool[126 - 32 + 1];
 
             for (int i = 0; i < Input.Length; i++) {
-
                 if (i < Input.Length - 1)
                     pairs[i] = string.Concat(Input[i], Input[i + 1]);
-
-                if (Input[i] >= 32 && Input[i] <= 126) 
-                    ASCIIRangeUsed[Input[i] - 32] = true; 
             }
 
             pairs = pairs.Where(p => p.All(char.IsLetter))
@@ -52,14 +61,12 @@ namespace Lab_8 {
                          .ToArray();
             
             var resultString = new StringBuilder(Input);
-            int ASCIIPointer = -1;
 
             foreach (var p in pairs) {
                 if (!resultString.ToString().Contains(p)) continue;
 
-                ASCIIPointer = Array.FindIndex(ASCIIRangeUsed, ASCIIPointer + 1, b => b == false);
+                var encodedChar = (char)GetFirstUnusedASCII(resultString.ToString());
 
-                var encodedChar = (char)(ASCIIPointer + 32);
                 AddCode(p, encodedChar);
                 resultString.Replace(p, encodedChar.ToString());
 

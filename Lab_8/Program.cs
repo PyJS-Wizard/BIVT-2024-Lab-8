@@ -12,7 +12,13 @@ using System.Threading.Tasks;
 namespace Lab_8 {
     class Program {
         static void Main(string[] args) {  
-            
+
+            string p = null;
+
+            foreach (var z in p) {
+
+            }
+
         }
 
     }

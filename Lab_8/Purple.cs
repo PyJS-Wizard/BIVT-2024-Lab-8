@@ -27,34 +27,46 @@ namespace Lab_8 {
             return char.IsLetter(c) || c == '-' || c == '\''; 
         }
 
-        protected string FormatNumbers(string s) {
+        protected string FormatNumbers(string s) {  // not used for now
             if (string.IsNullOrEmpty(s)) return s;
                 
             var result = new StringBuilder();
             int i = 0;
+            bool lastIsPunctOrSpace = true;
             
             while (i < s.Length) {
+                
+                char cur = s[i];
 
-                if (char.IsDigit(s[i])) {
+                if (char.IsDigit(cur)) {
                     int start = i;
                     bool hasDecimalPoint = false;
                     
+                    var provider = System.Globalization.CultureInfo.InvariantCulture;
+
                     for (; i < s.Length; i++) {
-                        if ((s[i] == '.' || s[i] == ',') && !hasDecimalPoint) 
+                        cur = s[i];
+
+                        if ((cur == '.' || cur == ',') && !hasDecimalPoint) {
                             hasDecimalPoint = true;
-                        else if (!char.IsDigit(s[i]))
+                            if (cur == ',')   
+                                provider = new System.Globalization.CultureInfo("ru-RU");  
+                        } else if (!char.IsDigit(cur))
                             break;
                     }
                     
                     string numberStr = s[start..i];
                     string formattedString = numberStr;
 
-                    if ((i < s.Length && (punctuationMarks.Contains(s[i]) || s[i] == ' ')) || (i == s.Length))
-                        formattedString = double.Parse(numberStr).ToString("f4");
-
+                    if (lastIsPunctOrSpace && ((i < s.Length && (punctuationMarks.Contains(cur) || cur == ' ')) || (i == s.Length)))
+                        formattedString = double.Parse(numberStr, provider).ToString("f4", provider);
+                        
                     result.Append(formattedString);
 
-                } else result.Append(s[i++]);
+                } else {
+                    lastIsPunctOrSpace = punctuationMarks.Contains(cur) || cur == ' ';
+                    result.Append(s[i++]);
+                }
 
             }
             

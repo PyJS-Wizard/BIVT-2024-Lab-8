@@ -14,7 +14,7 @@ using System.Threading.Tasks.Sources;
 namespace Lab_8 {
     public class Purple_2 : Purple {               
         private string[] _output;
-        public string[] Output => _output;
+        public string[] Output => (string[])_output?.Clone();
 
         public Purple_2(string input) : base(input) {
             _output = Array.Empty<string>();
@@ -70,16 +70,22 @@ namespace Lab_8 {
                     
                     curLine.Clear();
                     curLine.Append(word);
+
+                    if (n + 1 + word.Length > 50 && i == spaceSplit.Length - 1) {
+                        curLine.Append(new string(' ', 50 - word.Length));
+                        resultLines.Append("\n" + curLine);
+                    }
                 }
             }
+
 
             _output = resultLines.ToString().Split('\n');
         }
 
         public override string ToString() {
-            if (Output == null) return null;
+            if (_output == null) return null;
             
-            return String.Join('\n', Output);
+            return String.Join('\n', _output);
         }
     }
 }
