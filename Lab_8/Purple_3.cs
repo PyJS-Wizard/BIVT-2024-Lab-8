@@ -60,6 +60,7 @@ namespace Lab_8 {
                          .Select(g => g.Key)
                          .ToArray();
             
+            
             var resultString = new StringBuilder(Input);
 
             foreach (var p in pairs) {

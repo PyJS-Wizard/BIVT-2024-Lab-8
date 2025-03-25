@@ -27,6 +27,7 @@ namespace Lab_8 {
                 lastIndex--;
             }
         }
+
         public override void Review() {
             if (string.IsNullOrEmpty(Input))  {
                 _output = Input;
@@ -35,14 +36,17 @@ namespace Lab_8 {
             
             var resultString = new StringBuilder(Input);
             var startIndex = -1;
+            var nextIsPunctOrSpace = false;
 
             for (int i = 0; i < Input.Length; i++) {
                 bool isLetter = IsInWord(Input[i]);
+                nextIsPunctOrSpace = isValidDelimiter(Input[i]) || (isLetter && i == Input.Length - 1);
 
-                if (isLetter && startIndex == -1)
+                if (isLetter && startIndex == -1 && ((i > 0 && isValidDelimiter(Input[i - 1])) || i == 0)) {
                     startIndex = i; 
+                }
                 
-                if ((!isLetter && startIndex > -1) || i == Input.Length - 1) {
+                if (nextIsPunctOrSpace && startIndex > -1) {
                     ReverseStringBuilder(resultString, startIndex, isLetter ? i : i - 1);
                     startIndex = -1;
                 }

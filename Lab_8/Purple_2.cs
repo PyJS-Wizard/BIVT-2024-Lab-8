@@ -41,38 +41,12 @@ namespace Lab_8 {
                 if (n + 1 + word.Length > 50 || i == spaceSplit.Length - 1) {
                     if (resultLines.Length > 0) resultLines.Append('\n');
 
-                    var splittedWords = curLine.ToString().Split();
-                    int spaceCount = splittedWords.Length - 1;
-                    int remaining = Math.Max(0, 50 - curLine.Length);
-                    int minSpaces, additionalSpaceCount;
-
-                    if (spaceCount > 0) {
-                        minSpaces = 1 + remaining / spaceCount;
-                        additionalSpaceCount = remaining % spaceCount;
-                    } else {
-                        minSpaces = remaining;
-                        additionalSpaceCount = 0;
-                    }
-
-                    for (int j = 0; j < spaceCount; j++) {    
-                        resultLines.Append(splittedWords[j]);
-
-                        int curSpacesCount = minSpaces;
-                        
-                        if (j < additionalSpaceCount) curSpacesCount++;
-
-                        resultLines.Append(new string(' ', curSpacesCount));
-                    }
-                    
-                    resultLines.Append(splittedWords[^1]);
-                    
-                    if (spaceCount == 0) resultLines.Append(new string(' ', remaining));
+                    resultLines.Append(curLine);
                     
                     curLine.Clear();
                     curLine.Append(word);
 
                     if (n + 1 + word.Length > 50 && i == spaceSplit.Length - 1) {
-                        curLine.Append(new string(' ', 50 - word.Length));
                         resultLines.Append("\n" + curLine);
                     }
                 }

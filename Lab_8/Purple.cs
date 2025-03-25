@@ -27,6 +27,10 @@ namespace Lab_8 {
             return char.IsLetter(c) || c == '-' || c == '\''; 
         }
 
+        protected bool isValidDelimiter(char c) {
+            return punctuationMarks.Contains(c) || c == ' ';
+        }
+
         protected string FormatNumbers(string s) {  // not used for now
             if (string.IsNullOrEmpty(s)) return s;
                 
@@ -58,13 +62,13 @@ namespace Lab_8 {
                     string numberStr = s[start..i];
                     string formattedString = numberStr;
 
-                    if (lastIsPunctOrSpace && ((i < s.Length && (punctuationMarks.Contains(cur) || cur == ' ')) || (i == s.Length)))
+                    if (lastIsPunctOrSpace && ((i < s.Length && isValidDelimiter(cur)) || (i == s.Length)))
                         formattedString = double.Parse(numberStr, provider).ToString("f4", provider);
                         
                     result.Append(formattedString);
 
                 } else {
-                    lastIsPunctOrSpace = punctuationMarks.Contains(cur) || cur == ' ';
+                    lastIsPunctOrSpace = isValidDelimiter(cur);
                     result.Append(s[i++]);
                 }
 
