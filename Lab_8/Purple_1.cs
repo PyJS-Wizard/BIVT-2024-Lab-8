@@ -14,9 +14,7 @@ namespace Lab_8 {
   
         public string Output => _output;
 
-        public Purple_1(string input) : base(input) {
-            _output = String.Empty;
-        }
+        public Purple_1(string input) : base(input) {}
 
         private void ReverseStringBuilder(StringBuilder array, int startIndex, int lastIndex) {
             if (startIndex < 0 || lastIndex >= array.Length) return;

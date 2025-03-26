@@ -17,17 +17,14 @@ namespace Lab_8 {
         public string Output => _output;
         public (string, char)[] Codes => ((string, char)[])_codes?.Clone();
 
-        public Purple_3(string input) : base(input) {
-            _codes = new (string, char)[0];
-            _output = String.Empty;
-        }
+        public Purple_3(string input) : base(input) {}
 
         private void AddCode(string pair, char code) {
             Array.Resize(ref _codes, _codes.Length + 1);
             _codes[^1] = (pair, code);
         }
 
-        private int GetFirstUnusedASCII(string s) {
+        private bool[] GetASCIICharArray(string s) {
             var ASCIIRangeUsed = new bool[126 - 32 + 1];
 
             foreach (var c in s) {
@@ -35,7 +32,7 @@ namespace Lab_8 {
                     ASCIIRangeUsed[c - 32] = true; 
             }
         
-            return Array.FindIndex(ASCIIRangeUsed, a => a == false) + 32;
+            return ASCIIRangeUsed;
         }
         public override void Review() {
             if (Input == null) return;
@@ -47,6 +44,9 @@ namespace Lab_8 {
                 return;
             }
             
+            var usedASCIIArray = GetASCIICharArray(Input);
+            var ASCIILastUsedIndex = -1;
+
             var pairs = new string[Input.Length - 1];
 
             for (int i = 0; i < Input.Length; i++) {
@@ -57,6 +57,7 @@ namespace Lab_8 {
             pairs = pairs.Where(p => p.All(char.IsLetter))
                          .GroupBy(p => p)
                          .OrderByDescending(g => g.Count())
+                         .Take(5)
                          .Select(g => g.Key)
                          .ToArray();
             
@@ -64,14 +65,10 @@ namespace Lab_8 {
             var resultString = new StringBuilder(Input);
 
             foreach (var p in pairs) {
-                if (!resultString.ToString().Contains(p)) continue;
-
-                var encodedChar = (char)GetFirstUnusedASCII(resultString.ToString());
-
+                ASCIILastUsedIndex = Array.FindIndex(usedASCIIArray, ASCIILastUsedIndex + 1, c => c == false); 
+                var encodedChar = (char)(ASCIILastUsedIndex + 32);
                 AddCode(p, encodedChar);
                 resultString.Replace(p, encodedChar.ToString());
-
-                if (_codes.Length == 5) break;
             }
 
                 

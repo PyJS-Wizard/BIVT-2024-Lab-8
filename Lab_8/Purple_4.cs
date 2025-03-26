@@ -15,7 +15,6 @@ namespace Lab_8 {
         public string Output => _output;
 
         public Purple_4(string input, (string, char)[] codes) : base(input) {
-            _output = String.Empty;
             _codes = codes;
         }
 
