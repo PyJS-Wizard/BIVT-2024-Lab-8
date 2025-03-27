@@ -70,7 +70,6 @@ namespace Lab_8 {
                     curLine.Append(word);
 
                     if (n + 1 + word.Length > 50 && i == spaceSplit.Length - 1) {
-                        curLine.Append(new string(' ', 50 - word.Length));
                         resultLines.Append("\n" + curLine);
                     }
                 }
